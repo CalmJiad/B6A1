@@ -23,6 +23,12 @@ class Person {
   age: number;
 
   constructor(name: string, age: number) {
+    if (!name || name.trim().length === 0) {
+      throw new Error("Name must be a non-empty string.");
+    }
+    if (age < 0) {
+      throw new Error("Age must be valid number.");
+    }
     this.name = name;
     this.age = age;
   }
@@ -106,11 +112,16 @@ type Product = {
 };
 
 const calculateTotalPrice = (products: Product[]): number => {
-  return products.reduce((total, product) => {
-    const productTotal = product.price * product.quantity;
-    const discountAmount = product.discount
-      ? (productTotal * product.discount) / 100
-      : 0;
-    return total + (productTotal - discountAmount);
+  if (products.length === 0) return 0;
+
+  return products.reduce((acc, curr) => {
+    const productTotal = curr.price * curr.quantity;
+
+    if (curr.discount) {
+      const discountedTotal =
+        productTotal - (productTotal * curr.discount) / 100;
+      return acc + discountedTotal;
+    }
+    return acc + productTotal;
   }, 0);
 };
