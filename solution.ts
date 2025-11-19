@@ -23,7 +23,7 @@ class Person {
   age: number;
 
   constructor(name: string, age: number) {
-    if (!name || name.trim().length === 0) {
+    if (!name || name.length === 0) {
       throw new Error("Name must be a non-empty string.");
     }
     if (age < 0) {
